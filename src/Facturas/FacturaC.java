@@ -12,6 +12,10 @@ public class FacturaC extends Factura {
         setTotal(calculototal());
     }
 
+    public FacturaC(String cuit, int sucursal, int numeroDeFactura, LocalDate fecha) {
+        super(0, cuit, Tipodecomprovante.A, sucursal, numeroDeFactura, fecha);
+    }
+
     @Override
     public double calculototal() {
         return getNogrado();

@@ -14,6 +14,10 @@ public class FacturaB extends Factura {
     private double IVA21;
     private double IVA105;
 
+    public FacturaB(String cuit, int sucursal, int numeroDeFactura, LocalDate fecha) {
+        super(0, cuit, Tipodecomprovante.A, sucursal, numeroDeFactura, fecha);
+    }
+
     public FacturaB(double nogrado, String cuit, Tipodecomprovante tipo, int sucursal, int numerodefactura, LocalDate fecha, double neto21, double neto105, double percepcionIVA, double percepcionIB, double otrosImpuestos) {
         super(nogrado, cuit, tipo, sucursal, numerodefactura, fecha);
         this.neto21 = neto21;
@@ -111,6 +115,13 @@ public class FacturaB extends Factura {
         PercepcionIB = scanner.nextDouble();
         System.out.print("Ingrese otros impuestos: ");
         OtrosImpuestos = scanner.nextDouble();
+
+        //recalculo de impuestos
+
+        IVA21 = calculodeiva21();
+        IVA105 = calculoiva105();
+        setTotal(calculototal());
+
 
     }
 
