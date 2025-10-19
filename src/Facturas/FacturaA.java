@@ -85,6 +85,7 @@ public  class  FacturaA extends Factura {
     public void setIVA105(double IVA105) {
         this.IVA105 = IVA105;
     }
+
     public double calculodeiva21(){
         return getNeto21()*0.21 ;
     }
@@ -127,14 +128,23 @@ public  class  FacturaA extends Factura {
 
     @Override
     public String toString() {
-        return "FacturaAYBNormal{" + super.toString() +" Total: "+ getTotal() +
-                " neto21=" + neto21 +
-                ", neto105=" + neto105 +
-                ", PercepcionIVA=" + PercepcionIVA +
-                ", PercepcionIB=" + PercepcionIB +
-                ", OtrosImpuestos=" + OtrosImpuestos +
-                ", IVA21=" + IVA21 +
-                ", IVA105=" + IVA105 +
-                '}';
+        return"\n========= FACTURA A =========" +
+                "\nCUIT: " + getCuit() +
+                "\nTipo: " + getTipo() +
+                "\nSucursal: " + getSucursal() +
+                "\nN° Factura: " + getNumerodefactura() +
+                "\nFecha: " + getFecha() +
+                "\n-----------------------------" +
+                "\nNo Gravado: $" + String.format("%.2f", getNogrado()) +
+                "\nNeto 21%%: $" + String.format("%.2f", neto21) +
+                "\nIVA 21%%: $" + String.format("%.2f", IVA21) +
+                "\nNeto 10.5%%: $" + String.format("%.2f", neto105) +
+                "\nIVA 10.5%%: $" + String.format("%.2f", IVA105) +
+                "\nPercepción IVA: $" + String.format("%.2f", PercepcionIVA) +
+                "\nPercepción IB: $" + String.format("%.2f", PercepcionIB) +
+                "\nOtros Impuestos: $" + String.format("%.2f", OtrosImpuestos) +
+                "\n=============================" +
+                "\nTOTAL: $" + String.format("%.2f", getTotal()) +
+                "\n=============================\n";
     }
 }

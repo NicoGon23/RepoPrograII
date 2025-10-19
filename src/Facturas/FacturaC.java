@@ -13,7 +13,7 @@ public class FacturaC extends Factura {
     }
 
     public FacturaC(String cuit, int sucursal, int numeroDeFactura, LocalDate fecha) {
-        super(0, cuit, Tipodecomprovante.A, sucursal, numeroDeFactura, fecha);
+        super(0, cuit, Tipodecomprovante.C, sucursal, numeroDeFactura, fecha);
     }
 
     @Override
@@ -31,6 +31,16 @@ public class FacturaC extends Factura {
 
     @Override
     public String toString() {
-        return super.toString() + " Total: " + getTotal();
+        return "\n========= FACTURA C =========" +
+                "\nCUIT: " + getCuit() +
+                "\nTipo: " + getTipo() +
+                "\nSucursal: " + getSucursal() +
+                "\nN° Factura: " + getNumerodefactura() +
+                "\nFecha: " + getFecha() +
+                "\n-----------------------------" +
+                "\nNo Gravado: $" + String.format("%.2f", getNogrado()) +
+                "\n=============================" +
+                "\nTOTAL: $" + String.format("%.2f", getTotal()) +
+                "\n=============================\n";
     }
 }

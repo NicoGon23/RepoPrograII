@@ -1,7 +1,6 @@
 package Gestor;
 
 import Facturas.*;
-import Facturas.Enums.Tipodecomprovante;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class Gestor {
 
        LocalDate fecha = LocalDate.now();
 
-       Factura factura = EmisionFact.crearFactura(tipo,cuit,sucursal,numFactura,fecha);;
+       Factura factura = CargaFact.crearFactura(tipo,cuit,sucursal,numFactura,fecha);;
 
        if (factura != null) {
            factura.cargaDatos(scanner);
@@ -35,19 +34,19 @@ public class Gestor {
 
 
    }
-   public void verarreglo(){
-       for (Factura i : Lista){
-           if (i instanceof FacturaA){
-               FacturaA p1 = (FacturaA) i;
-               System.out.println(p1.toString());
-           }
-           if (i instanceof FacturaB){
-               FacturaB p1 = (FacturaB) i;
-               System.out.println(p1.toString());
-           }if (i instanceof FacturaC){
-               FacturaC p1 = (FacturaC) i;
-               System.out.println(p1.toString());
-           }
+   public void verFacturasCargadas(){
+
+       if (Lista.isEmpty()) {
+           System.out.println("No hay facturas cargadas.");
+           return;
        }
+
+       System.out.println("=== LISTADO DE FACTURAS ===");
+       int index = 1;
+       for (Factura factura : Lista) {
+           System.out.println(index++ + ". " + factura);
+           System.out.println("----------------------------");
+       }
+
    }
 }

@@ -17,7 +17,7 @@ public class Main {
                 System.out.println("El programa se cerrara");
             }break;
             case 1:{gestor.Cargadefacturas(scanner);}break;
-            case 2:{gestor.verarreglo();}break;
+            case 2:{gestor.verFacturasCargadas();}break;
             default :{
                 System.out.println("Error");
             }break;

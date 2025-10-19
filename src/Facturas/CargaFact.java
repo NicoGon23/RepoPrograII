@@ -2,7 +2,7 @@ package Facturas;
 
 import java.time.LocalDate;
 
-public class EmisionFact {
+public class CargaFact {
 
     public static Factura crearFactura(int tipo, String cuil, int sucursal, int numFactura, LocalDate fecha) {
         Factura factura = null;

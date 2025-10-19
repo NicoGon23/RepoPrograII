@@ -66,21 +66,27 @@ public abstract class Factura {
         return Total;
     }
 
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
     public double setTotal(double total) {
         Total = total;
         return total;
     }
 
+
+
     @Override
     public String toString() {
-        return "Factura{" +
-                "nogrado=" + nogrado +
-                ", Cuit='" + Cuit + '\'' +
-                ", Tipo=" + Tipo +
-                ", sucursal=" + sucursal +
-                ", numerodefactura=" + numerodefactura +
-                ", fecha=" + fecha +
-                '}';
+        return "Factura A - CUIT: " + getCuit() +
+                ", Fecha: " + getFecha() +
+                ", Total: " + getTotal();
     }
 
     public abstract double calculototal();

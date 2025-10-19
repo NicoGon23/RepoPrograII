@@ -15,7 +15,7 @@ public class FacturaB extends Factura {
     private double IVA105;
 
     public FacturaB(String cuit, int sucursal, int numeroDeFactura, LocalDate fecha) {
-        super(0, cuit, Tipodecomprovante.A, sucursal, numeroDeFactura, fecha);
+        super(0, cuit, Tipodecomprovante.B, sucursal, numeroDeFactura, fecha);
     }
 
     public FacturaB(double nogrado, String cuit, Tipodecomprovante tipo, int sucursal, int numerodefactura, LocalDate fecha, double neto21, double neto105, double percepcionIVA, double percepcionIB, double otrosImpuestos) {
@@ -127,14 +127,21 @@ public class FacturaB extends Factura {
 
     @Override
     public String toString() {
-        return "FacturaAYBNormal{" + super.toString() +" Total: "+ getTotal() +
-                " neto21=" + neto21 +
-                ", neto105=" + neto105 +
-                ", PercepcionIVA=" + PercepcionIVA +
-                ", PercepcionIB=" + PercepcionIB +
-                ", OtrosImpuestos=" + OtrosImpuestos +
-                ", IVA21=" + IVA21 +
-                ", IVA105=" + IVA105 +
-                '}';
+        return "\n========= FACTURA B =========" +
+                "\nCUIT: " + getCuit() +
+                "\nTipo: " + getTipo() +
+                "\nSucursal: " + getSucursal() +
+                "\nN° Factura: " + getNumerodefactura() +
+                "\nFecha: " + getFecha() +
+                "\n-----------------------------" +
+                "\nNo Gravado: $" + String.format("%.2f", getNogrado()) +
+                "\nNeto 21%%: $" + String.format("%.2f", neto21) +
+                "\nIVA 21%%: $" + String.format("%.2f", IVA21) +
+                "\nNeto 10.5%%: $" + String.format("%.2f", neto105) +
+                "\nIVA 10.5%%: $" + String.format("%.2f", IVA105) +
+                "\nOtros Impuestos: $" + String.format("%.2f", OtrosImpuestos) +
+                "\n=============================" +
+                "\nTOTAL: $" + String.format("%.2f", getTotal()) +
+                "\n=============================\n";
     }
 }
