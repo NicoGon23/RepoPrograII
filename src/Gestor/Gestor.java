@@ -1,6 +1,6 @@
 package Gestor;
 
-import Facturas.Enums.FacturaC;
+import Facturas.FacturaC;
 import Facturas.Enums.Tipodecomprovante;
 import Facturas.Factura;
 import Facturas.FacturaA;

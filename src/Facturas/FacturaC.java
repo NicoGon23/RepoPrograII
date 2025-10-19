@@ -1,8 +1,9 @@
-package Facturas.Enums;
+package Facturas;
 
-import Facturas.Factura;
+import Facturas.Enums.Tipodecomprovante;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class FacturaC extends Factura {
 
@@ -14,6 +15,14 @@ public class FacturaC extends Factura {
     @Override
     public double calculototal() {
         return getNogrado();
+    }
+
+    @Override
+    public void cargaDatos(Scanner scanner) {
+
+        System.out.print("Ingrese el no gravado: ");
+        setNogrado(scanner.nextDouble());
+
     }
 
     @Override

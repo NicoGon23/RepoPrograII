@@ -2,6 +2,7 @@ package Facturas;
 import Facturas.Enums.Tipodecomprovante;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public abstract class Factura {
     private double nogrado;
@@ -83,4 +84,9 @@ public abstract class Factura {
     }
 
     public abstract double calculototal();
+
+
+    public abstract void cargaDatos(Scanner scanner);
+
+
 }

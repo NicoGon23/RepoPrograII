@@ -3,6 +3,7 @@ package Facturas;
 import Facturas.Enums.Tipodecomprovante;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class FacturaB extends Factura {
     private double neto21;
@@ -93,6 +94,24 @@ public class FacturaB extends Factura {
         double total = getNogrado() + getNeto21() + getNeto105()
                 + getPercepcionIVA() + getPercepcionIB() + getOtrosImpuestos() + getIVA21() + getIVA105();
         return total;
+    }
+
+    @Override
+    public void cargaDatos(Scanner scanner) {
+
+        System.out.print("Ingrese el no gravado: ");
+        setNogrado(scanner.nextDouble());
+        System.out.print("Ingrese el neto 21%: ");
+        neto21 = scanner.nextDouble();
+        System.out.print("Ingrese el neto 10.5%: ");
+        neto105 = scanner.nextDouble();
+        System.out.print("Ingrese la percepción de IVA: ");
+        PercepcionIVA = scanner.nextDouble();
+        System.out.print("Ingrese la percepción de IIBB: ");
+        PercepcionIB = scanner.nextDouble();
+        System.out.print("Ingrese otros impuestos: ");
+        OtrosImpuestos = scanner.nextDouble();
+
     }
 
     @Override
