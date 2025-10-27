@@ -1,5 +1,6 @@
 import Gestor.Gestor;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
@@ -11,7 +12,13 @@ public class Main {
         System.out.println("0-Salir");
         System.out.println("1-Cargar factura");
         System.out.println("2-Ver facturas cargadas");
-        opc = scanner.nextInt();
+        try {
+            opc = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("⚠️ Entrada inválida. Debe ingresar un número.");
+            scanner.nextLine();
+            opc = -1;
+        }
         switch (opc){
             case 0:{
                 System.out.println("El programa se cerrara");

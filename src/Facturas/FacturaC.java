@@ -1,19 +1,19 @@
 package Facturas;
 
-import Facturas.Enums.Tipodecomprovante;
+import Facturas.Enums.Tipodecomprobante;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class FacturaC extends Factura {
 
-    public FacturaC(double nogrado, String cuit, Tipodecomprovante tipo, int sucursal, int numerodefactura, LocalDate fecha) {
+    public FacturaC(double nogrado, String cuit, Tipodecomprobante tipo, int sucursal, int numerodefactura, LocalDate fecha) {
         super(nogrado, cuit, tipo, sucursal, numerodefactura, fecha);
         setTotal(calculototal());
     }
 
     public FacturaC(String cuit, int sucursal, int numeroDeFactura, LocalDate fecha) {
-        super(0, cuit, Tipodecomprovante.C, sucursal, numeroDeFactura, fecha);
+        super(0, cuit, Tipodecomprobante.C, sucursal, numeroDeFactura, fecha);
     }
 
     @Override

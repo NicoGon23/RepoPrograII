@@ -1,5 +1,5 @@
 package Facturas;
-import Facturas.Enums.Tipodecomprovante;
+import Facturas.Enums.Tipodecomprobante;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -8,12 +8,12 @@ public abstract class Factura {
     private double nogrado;
     private double Total;
     private String Cuit ;
-    private Tipodecomprovante Tipo ;
+    private Tipodecomprobante Tipo ;
     private int sucursal;
     private int numerodefactura ;
     private LocalDate fecha ;
 
-    public Factura(double nogrado,  String cuit, Tipodecomprovante tipo, int sucursal, int numerodefactura, LocalDate fecha) {
+    public Factura(double nogrado, String cuit, Tipodecomprobante tipo, int sucursal, int numerodefactura, LocalDate fecha) {
         this.nogrado = nogrado;
         Cuit = cuit;
         Tipo = tipo;
@@ -30,11 +30,11 @@ public abstract class Factura {
         Cuit = cuit;
     }
 
-    public Tipodecomprovante getTipo() {
+    public Tipodecomprobante getTipo() {
         return Tipo;
     }
 
-    public void setTipo(Tipodecomprovante tipo) {
+    public void setTipo(Tipodecomprobante tipo) {
         Tipo = tipo;
     }
 

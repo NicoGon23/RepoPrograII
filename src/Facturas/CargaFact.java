@@ -1,35 +1,36 @@
 package Facturas;
 
+import Facturas.Enums.Tipodecomprobante;
+
+import java.lang.reflect.Constructor;
 import java.time.LocalDate;
 
-public class CargaFact {
+public class CargaFact<T extends Factura>{
 
-    public static Factura crearFactura(int tipo, String cuil, int sucursal, int numFactura, LocalDate fecha) {
+    private Tipodecomprobante tipo; // en lugar de Class<T>
+
+    public CargaFact(Tipodecomprobante tipo) {
+        this.tipo = tipo;
+    }
+
+    public Factura crearFactura(String cuit, int sucursal, int numFactura, LocalDate fecha) {
         Factura factura = null;
 
         switch (tipo) {
-            case 1: {
-                factura = new FacturaA(cuil, sucursal, numFactura, fecha);
+            case A:
+                factura = new FacturaA(cuit, sucursal, numFactura, fecha);
                 break;
-            }
-            case 2: {
-                factura = new FacturaB(cuil, sucursal, numFactura, fecha);
+            case B:
+                factura = new FacturaB(cuit, sucursal, numFactura, fecha);
                 break;
-            }
-            case 3: {
-                factura = new FacturaC(cuil, sucursal, numFactura, fecha);
+            case C:
+                factura = new FacturaC(cuit, sucursal, numFactura, fecha);
                 break;
-            }
-            default: {
-                System.out.println("Tipo de factura inválido.");
-                break;
-            }
+            default:
+                System.out.println("⚠️ Tipo de factura no reconocido.");
         }
 
         return factura;
     }
-
-
-
 
 }

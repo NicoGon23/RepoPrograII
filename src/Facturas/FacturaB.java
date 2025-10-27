@@ -1,6 +1,6 @@
 package Facturas;
 
-import Facturas.Enums.Tipodecomprovante;
+import Facturas.Enums.Tipodecomprobante;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -15,10 +15,10 @@ public class FacturaB extends Factura {
     private double IVA105;
 
     public FacturaB(String cuit, int sucursal, int numeroDeFactura, LocalDate fecha) {
-        super(0, cuit, Tipodecomprovante.B, sucursal, numeroDeFactura, fecha);
+        super(0, cuit, Tipodecomprobante.B, sucursal, numeroDeFactura, fecha);
     }
 
-    public FacturaB(double nogrado, String cuit, Tipodecomprovante tipo, int sucursal, int numerodefactura, LocalDate fecha, double neto21, double neto105, double percepcionIVA, double percepcionIB, double otrosImpuestos) {
+    public FacturaB(double nogrado, String cuit, Tipodecomprobante tipo, int sucursal, int numerodefactura, LocalDate fecha, double neto21, double neto105, double percepcionIVA, double percepcionIB, double otrosImpuestos) {
         super(nogrado, cuit, tipo, sucursal, numerodefactura, fecha);
         this.neto21 = neto21;
         this.neto105 = neto105;

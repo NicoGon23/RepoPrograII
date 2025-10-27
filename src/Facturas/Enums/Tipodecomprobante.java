@@ -1,5 +1,5 @@
 package Facturas.Enums;
 
-public enum Tipodecomprovante {
+public enum Tipodecomprobante {
     A , B , C
 }
