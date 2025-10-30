@@ -1,98 +1,69 @@
 package Facturas;
-import Facturas.Enums.Tipodecomprobante;
 
+import Facturas.Enums.Tipodecomprobante;
+import Facturas.Enums.TipoOperacion;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public abstract class Factura {
+
     private double nogrado;
-    private double Total;
-    private String Cuit ;
-    private Tipodecomprobante Tipo ;
+    private String cuit;
+    private Tipodecomprobante tipo;
     private int sucursal;
-    private int numerodefactura ;
-    private LocalDate fecha ;
+    private int numerodefactura;
+    private LocalDate fecha;
+    private double total;
+    private TipoOperacion tipoOperacion; // NUEVO: compra o venta
 
     public Factura(double nogrado, String cuit, Tipodecomprobante tipo, int sucursal, int numerodefactura, LocalDate fecha) {
         this.nogrado = nogrado;
-        Cuit = cuit;
-        Tipo = tipo;
+        this.cuit = cuit;
+        this.tipo = tipo;
         this.sucursal = sucursal;
         this.numerodefactura = numerodefactura;
         this.fecha = fecha;
     }
 
-    public String getCuit() {
-        return Cuit;
-    }
+    public double getNogrado() { return nogrado; }
+    public void setNogrado(double nogrado) { this.nogrado = nogrado; }
 
-    public void setCuit(String cuit) {
-        Cuit = cuit;
-    }
+    public String getCuit() { return cuit; }
+    public void setCuit(String cuit) { this.cuit = cuit; }
 
-    public Tipodecomprobante getTipo() {
-        return Tipo;
-    }
+    public Tipodecomprobante getTipo() { return tipo; }
+    public void setTipo(Tipodecomprobante tipo) { this.tipo = tipo; }
 
-    public void setTipo(Tipodecomprobante tipo) {
-        Tipo = tipo;
-    }
+    public int getSucursal() { return sucursal; }
+    public void setSucursal(int sucursal) { this.sucursal = sucursal; }
 
-    public int getSucursal() {
-        return sucursal;
-    }
+    public int getNumerodefactura() { return numerodefactura; }
+    public void setNumerodefactura(int numerodefactura) { this.numerodefactura = numerodefactura; }
 
-    public void setSucursal(int sucursal) {
-        this.sucursal = sucursal;
-    }
+    public LocalDate getFecha() { return fecha; }
+    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
 
-    public int getNumerodefactura() {
-        return numerodefactura;
-    }
+    public double getTotal() { return total; }
+    public void setTotal(double total) { this.total = total; }
 
-    public void setNumerodefactura(int numerodefactura) {
-        this.numerodefactura = numerodefactura;
-    }
+    public TipoOperacion getTipoOperacion() { return tipoOperacion; }
+    public void setTipoOperacion(TipoOperacion tipoOperacion) { this.tipoOperacion = tipoOperacion; }
 
-    public double getNogrado() {
-        return nogrado;
-    }
+    // Método abstracto para calcular el total, cada subclase lo implementa
+    public abstract double calculototal();
 
-    public void setNogrado(double nogrado) {
-        this.nogrado = nogrado;
-    }
-
-    public double getTotal() {
-        return Total;
-    }
-
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public double setTotal(double total) {
-        Total = total;
-        return total;
-    }
-
-
+    // Método abstracto para cargar datos desde Scanner
+    public abstract void cargaDatos(Scanner scanner);
 
     @Override
     public String toString() {
-        return "Factura A - CUIT: " + getCuit() +
-                ", Fecha: " + getFecha() +
-                ", Total: " + getTotal();
+        return "\nFactura " + tipo +
+                "\nCUIT: " + cuit +
+                "\nOperación: " + tipoOperacion +
+                "\nSucursal: " + sucursal +
+                "\nN° Factura: " + numerodefactura +
+                "\nFecha: " + fecha +
+                "\nNo Gravado: $" + String.format("%.2f", nogrado) +
+                "\nTotal: $" + String.format("%.2f", total);
     }
-
-    public abstract double calculototal();
-
-
-    public abstract void cargaDatos(Scanner scanner);
-
-
 }

@@ -1,123 +1,150 @@
 package Gestor;
 
-import Entidades.Entidad;
-import Entidades.GestoraEntidades;
-import Entidades.Proveedor;
 import Facturas.*;
 import Facturas.Enums.Tipodecomprobante;
+import Facturas.Enums.TipoOperacion;
+import Entidades.*;
 
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.time.LocalDate;
+
 public class Gestor {
-    List<Factura> Lista = new ArrayList<>();
-    GestoraEntidades gestoraEntidades = new GestoraEntidades();
 
+    private List<Factura> listaFacturas = new ArrayList<>();
+    private GestoraEntidades gestoraEntidades = new GestoraEntidades();
 
-    public Gestor() {
-    }
-
-
-    public void Cargadefacturas(Scanner scanner) {
-        int tipo = 0;
+    public void cargarFactura(Scanner scanner) {
         try {
-            System.out.print("Ingrese tipo de factura (1=A, 2=B, 3=C): ");
-            tipo = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("⚠️ Entrada inválida. Debe ingresar un número entre 1 y 3.");
-            scanner.nextLine();
-            return;
-        }
-        if (tipo < 1 || tipo > 3) {
-            System.out.println("⚠️ Tipo de factura inválido. Debe ser 1, 2 o 3.");
-            return;
-        }
+            System.out.print("¿Desea cargar una factura de (1) Compra o (2) Venta?: ");
+            int opcionOperacion = scanner.nextInt();
+            scanner.nextLine(); // limpiar buffer
 
-        System.out.print("Ingrese el CUIT: ");
-        String cuit = scanner.next();
+            if (opcionOperacion != 1 && opcionOperacion != 2) {
+                System.out.println("Opción inválida. Debe ingresar 1 o 2.");
+                return;
+            }
 
-        Entidad personaEncontrada = gestoraEntidades.buscarPorCuit(cuit);
-        Proveedor proveedor;
-        if (personaEncontrada != null && personaEncontrada instanceof Proveedor) {
-            proveedor = (Proveedor) personaEncontrada;
-            System.out.println("Proveedor encontrado: " + proveedor);
-        } else {
-            System.out.println("Proveedor no encontrado. Ingrese datos del nuevo proveedor:");
+            TipoOperacion tipoOperacion = opcionOperacion == 1 ? TipoOperacion.COMPRA : TipoOperacion.VENTA;
 
-            scanner.nextLine();
+            System.out.print("Ingrese tipo de factura (A/B/C): ");
+            String tipoFacturaStr = scanner.next().toUpperCase();
+            Tipodecomprobante tipoFactura;
+            switch (tipoFacturaStr) {
+                case "A": {
+                    tipoFactura = Tipodecomprobante.A;
+                    break;
+                }
+                case "B": {
+                    tipoFactura = Tipodecomprobante.B;
+                    break;
+                }
+                case "C": {
+                    tipoFactura = Tipodecomprobante.C;
+                    break;
+                }
+                default: {
+                    System.out.println("Tipo de factura inválido. Debe ser A, B o C.");
+                    return;
+                }
+            }
 
-            System.out.print("Nombre: ");
-            String nombre = scanner.nextLine();
+            System.out.print("Ingrese CUIT: ");
+            String cuit = scanner.next();
+            scanner.nextLine(); // limpiar buffer
 
-            System.out.print("Apellido: ");
-            String apellido = scanner.nextLine();
+            Entidad persona = gestoraEntidades.buscarPorCuit(cuit);
 
-            System.out.print("Dirección: ");
-            String direccion = scanner.nextLine();
-
-            System.out.print("Teléfono: ");
-            String telefono = scanner.nextLine();
-
-            System.out.print("Email: ");
-            String email = scanner.nextLine();
-
-            System.out.print("Rubro: ");
-            String rubro = scanner.nextLine();
-
-            proveedor = new Proveedor(nombre, apellido, cuit, direccion, telefono, email, rubro);
-            gestoraEntidades.agregarProveedor(proveedor);
+            if (tipoOperacion == TipoOperacion.COMPRA) {
+                Proveedor proveedor;
+                if (persona != null && persona instanceof Proveedor) {
+                    proveedor = (Proveedor) persona;
+                    System.out.println("Proveedor encontrado: " + proveedor);
+                } else {
+                    System.out.println("Proveedor no encontrado. Ingrese datos del nuevo proveedor:");
+                    proveedor = gestoraEntidades.crearProveedor(scanner, cuit);
+                    gestoraEntidades.agregarProveedor(proveedor);
+                }
+            } else { // VENTA
+                Cliente cliente;
+                if (persona != null && persona instanceof Cliente) {
+                    cliente = (Cliente) persona;
+                    System.out.println("Cliente encontrado: " + cliente);
+                } else {
+                    System.out.println("Cliente no encontrado. Ingrese datos del nuevo cliente:");
+                    cliente = gestoraEntidades.crearCliente(scanner, cuit);
+                    gestoraEntidades.agregarCliente(cliente);
+                }
+            }
 
             System.out.print("Ingrese número de sucursal: ");
             int sucursal = scanner.nextInt();
-
             System.out.print("Ingrese número de factura: ");
-            int numFactura = scanner.nextInt();
+            int numeroFactura = scanner.nextInt();
+            scanner.nextLine(); // limpiar buffer
 
             LocalDate fecha = LocalDate.now();
 
             Factura factura = null;
-
-            switch (tipo) {
-                case 1 -> {
-                    CargaFact<FacturaA> cargaA = new CargaFact<>(Tipodecomprobante.A);
-                    factura = cargaA.crearFactura(cuit, sucursal, numFactura, fecha);
+            switch (tipoFactura) {
+                case A: {
+                    factura = new FacturaA(cuit, sucursal, numeroFactura, fecha, tipoOperacion);
+                    break;
                 }
-                case 2 -> {
-                    CargaFact<FacturaB> cargaB = new CargaFact<>(Tipodecomprobante.B);
-                    factura = cargaB.crearFactura(cuit, sucursal, numFactura, fecha);
+                case B: {
+                    factura = new FacturaB(cuit, sucursal, numeroFactura, fecha, tipoOperacion);
+                    break;
                 }
-                case 3 -> {
-                    CargaFact<FacturaC> cargaC = new CargaFact<>(Tipodecomprobante.C);
-                    factura = cargaC.crearFactura(cuit, sucursal, numFactura, fecha);
+                case C: {
+                    factura = new FacturaC(cuit, sucursal, numeroFactura, fecha, tipoOperacion);
+                    break;
                 }
-                default -> System.out.println("Tipo de factura inválido.");
             }
 
             if (factura != null) {
                 factura.cargaDatos(scanner);
-                Lista.add(factura);
-                System.out.println("Factura " + factura.getTipo() + " agregada correctamente.");
+                listaFacturas.add(factura);
+                System.out.println("Factura agregada correctamente!");
             }
+
+        } catch (InputMismatchException e) {
+            System.out.println("ERROR: Debe ingresar datos válidos.");
+            scanner.nextLine();
         }
     }
 
-        public void verFacturasCargadas() {
+    public void verFacturas() {
+        if (listaFacturas.isEmpty()) {
+            System.out.println("No hay facturas cargadas.");
+            return;
+        }
+        System.out.println("=== LISTADO DE FACTURAS ===");
+        int index = 1;
+        for (Factura f : listaFacturas) {
+            System.out.println(index++ + ". " + f);
+        }
+    }
 
-            if (Lista.isEmpty()) {
-                System.out.println("No hay facturas cargadas.");
-                return;
-            }
-
-            System.out.println("=== LISTADO DE FACTURAS ===");
-            int index = 1;
-            for (Factura factura : Lista) {
-                System.out.println(index++ + ". " + factura);
-                System.out.println("----------------------------");
+    public void verFacturasPorTipoOperacion(TipoOperacion tipoOperacion) {
+        List<Factura> filtradas = new ArrayList<>();
+        for (Factura f : listaFacturas) {
+            if (f.getTipoOperacion() == tipoOperacion) {
+                filtradas.add(f);
             }
         }
 
-    }
+        if (filtradas.isEmpty()) {
+            System.out.println("No hay facturas de tipo " + tipoOperacion + ".");
+            return;
+        }
 
+        System.out.println("---------- LISTADO DE FACTURAS DE " + tipoOperacion + " ----------");
+        int i = 1;
+        for (Factura f : filtradas) {
+            System.out.println(i++ + ". " + f);
+            System.out.println("-----------------------------");
+        }
+    }
+}
