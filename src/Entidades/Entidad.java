@@ -9,13 +9,14 @@ public abstract class Entidad {
     private String telefono;
     private String email;
 
-    public Entidad(String nombre, String email, String telefono, String direccion, String cuit, String apellido) {
+    public Entidad(String nombre, String apellido, String cuit, String direccion, String telefono, String email) {
         this.nombre = nombre;
-        this.email = email;
-        this.telefono = telefono;
-        this.direccion = direccion;
-        this.cuit = cuit;
         this.apellido = apellido;
+        this.cuit = cuit;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.email = email;
+
     }
 
     public Entidad() {}

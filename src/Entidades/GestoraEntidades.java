@@ -1,85 +1,132 @@
 package Entidades;
 
+import Manejodearchivos.JSONUTILESPROCLIEN;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
+import java.util.Optional;
 
-public class GestoraEntidades {
+public class GestoraEntidades<T extends Entidad> {
 
-    private ArrayList<Cliente> clientes = new ArrayList<>();
-    private ArrayList<Proveedor> proveedores = new ArrayList<>();
+    private List<T> entidades = new ArrayList<>();
+    private JSONUTILESPROCLIEN jsonUtil = new JSONUTILESPROCLIEN();
 
-
-    public Proveedor crearProveedor(Scanner scanner, String cuit) {
-        System.out.print("Nombre: "); String nombre = scanner.nextLine();
-        System.out.print("Apellido: "); String apellido = scanner.nextLine();
-        System.out.print("Dirección: "); String direccion = scanner.nextLine();
-        System.out.print("Teléfono: "); String telefono = scanner.nextLine();
-        System.out.print("Email: "); String email = scanner.nextLine();
-        System.out.print("Rubro: "); String rubro = scanner.nextLine();
-        return new Proveedor(nombre, apellido, cuit, direccion, telefono, email, rubro);
+    // -------------------------------
+    //  CONSTRUCTOR: CARGA DESDE ARCHIVO
+    // -------------------------------
+    public GestoraEntidades() {
+        try {
+            List<Object> listaLeida = jsonUtil.leerTodas();
+            for (Object obj : listaLeida) {
+                if (obj != null) {
+                    entidades.add((T) obj);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("⚠️ Error al leer entidades desde JSON: " + e.getMessage());
+        }
     }
 
-    public Cliente crearCliente(Scanner scanner, String cuit) {
-        System.out.print("Nombre: "); String nombre = scanner.nextLine();
-        System.out.print("Apellido: "); String apellido = scanner.nextLine();
-        System.out.print("Dirección: "); String direccion = scanner.nextLine();
-        System.out.print("Teléfono: "); String telefono = scanner.nextLine();
-        System.out.print("Email: "); String email = scanner.nextLine();
-        System.out.print("Tipo de cliente (ej: minorista/mayorista): "); String tipoCliente = scanner.nextLine();
-        return new Cliente(nombre, apellido, cuit, direccion, telefono, email, tipoCliente);
+    // -------------------------------
+    //  AGREGAR ENTIDAD
+    // -------------------------------
+    public boolean agregarEntidad(T entidad) {
+        // Solo busca coincidencias dentro del mismo tipo (Cliente o Proveedor)
+        if (buscarPorCuit(entidad.getCuit(), entidad.getClass()) != null) {
+            System.out.println("⚠️ Ya existe un " + entidad.getClass().getSimpleName() +
+                    " con ese CUIT: " + entidad.getCuit());
+            return false;
+        }
+
+        entidades.add(entidad);
+        guardarCambios();
+        return true;
     }
 
-    public void agregarCliente(Cliente c) {
-        if (c != null) {
-            clientes.add(c);
-            System.out.println("Cliente agregado correctamente.");
+    // -------------------------------
+    //  ELIMINAR ENTIDAD
+    // -------------------------------
+    public boolean eliminarPorCuit(String cuit) {
+        Optional<T> entidad = entidades.stream()
+                .filter(e -> e.getCuit().equalsIgnoreCase(cuit))
+                .findFirst();
+
+        if (entidad.isPresent()) {
+            entidades.remove(entidad.get());
+            guardarCambios();
+            return true;
+        }
+        return false;
+    }
+
+    // -------------------------------
+    // LISTAR
+    // -------------------------------
+    public void listarEntidades() {
+        if (entidades.isEmpty()) {
+            System.out.println("No hay entidades cargadas.");
         } else {
-            System.out.println("No se pudo agregar el cliente.");
+            entidades.forEach(System.out::println);
         }
     }
 
-    public void agregarProveedor(Proveedor p) {
-        if (p != null) {
-            proveedores.add(p);
-            System.out.println("Proveedor agregado correctamente.");
-        } else {
-            System.out.println("No se pudo agregar el proveedor.");
+    public void listarPorTipo(Class<?> tipo) {
+        boolean encontrado = false;
+        for (T e : entidades) {
+            if (tipo.isInstance(e)) {
+                System.out.println(e);
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No hay entidades del tipo " + tipo.getSimpleName());
         }
     }
 
-
-    public void listarClientes() {
-        if (clientes.isEmpty()) {
-            System.out.println("No hay clientes cargados.");
-            return;
+    // -------------------------------
+    // BÚSQUEDA
+    // -------------------------------
+    public T buscarPorCuit(String cuit, Class<?> tipo) {
+        for (T e : entidades) {
+            if (e.getCuit().equalsIgnoreCase(cuit) && tipo.isInstance(e)) {
+                return e;
+            }
         }
-        System.out.println("----- LISTADO DE CLIENTES -----");
-        for (Cliente c : clientes) {
-            System.out.println(c);
-        }
-    }
-
-    public void listarProveedores() {
-        if (proveedores.isEmpty()) {
-            System.out.println("No hay proveedores cargados.");
-            return;
-        }
-        System.out.println("----- LISTADO DE PROVEEDORES -----");
-        for (Proveedor p : proveedores) {
-            System.out.println(p);
-        }
-    }
-
-
-    public Entidad buscarPorCuit(String cuit) {
-        for (Cliente c : clientes)
-            if (c.getCuit().equals(cuit))
-                return c;
-        for (Proveedor p : proveedores)
-            if (p.getCuit().equals(cuit))
-                return p;
         return null;
     }
 
+    // -------------------------------
+    // 🔹 RECARGAR DESDE ARCHIVO
+    // -------------------------------
+    public void recargarDesdeArchivo() {
+        try {
+            entidades.clear();
+            List<Object> listaLeida = jsonUtil.leerTodas();
+            for (Object obj : listaLeida) {
+                if (obj != null) {
+                    entidades.add((T) obj);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("⚠️ Error al recargar entidades: " + e.getMessage());
+        }
+    }
+
+    // -------------------------------
+    // 🔹 GUARDAR CAMBIOS EN ARCHIVO
+    // -------------------------------
+    private void guardarCambios() {
+        try {
+            jsonUtil.escribir(new ArrayList<>(entidades)); // usa solo la versión con List
+        } catch (Exception e) {
+            System.out.println("⚠️ Error al guardar cambios en JSON: " + e.getMessage());
+        }
+    }
+
+    // -------------------------------
+    // 🔹 GETTER
+    // -------------------------------
+    public List<T> getEntidades() {
+        return entidades;
+    }
 
 }

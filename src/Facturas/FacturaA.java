@@ -1,90 +1,161 @@
 package Facturas;
 
 import Facturas.Enums.Tipodecomprobante;
-import Facturas.Enums.TipoOperacion;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class FacturaA extends Factura {
+public  class  FacturaA extends Factura {
+     private double neto21;
+     private double neto105;
+     private double PercepcionIVA;
+     private double PercepcionIB;
+     private double OtrosImpuestos;
+     private double IVA21;
+     private double IVA105;
 
-    private double neto21;
-    private double neto105;
-    private double percepcionIVA;
-    private double percepcionIB;
-    private double otrosImpuestos;
-    private double IVA21;
-    private double IVA105;
 
-    // Constructor principal
-    public FacturaA(String cuit, int sucursal, int numeroDeFactura, LocalDate fecha, TipoOperacion tipoOperacion) {
-        super(0, cuit, Tipodecomprobante.A, sucursal, numeroDeFactura, fecha);
-        setTipoOperacion(tipoOperacion);
+
+
+    public FacturaA(double nogrado, String cuit, Tipodecomprobante tipo, int sucursal, int numerodefactura, LocalDate fecha, double neto21, double neto105, double percepcionIVA, double percepcionIB, double otrosImpuestos) {
+        super(nogrado, cuit, tipo, sucursal, numerodefactura, fecha);
+        this.neto21 = neto21;
+        this.neto105 = neto105;
+        PercepcionIVA = percepcionIVA;
+        PercepcionIB = percepcionIB;
+        OtrosImpuestos = otrosImpuestos;
+        this.IVA21 = calculodeiva21();
+        this.IVA105 = calculoiva105();
+        setTotal(calculototal());
     }
+    public double getNeto21() {
+        return neto21;
+    }
+
+    public void setNeto21(double neto21) {
+        this.neto21 = neto21;
+    }
+
+    public double getNeto105() {
+        return neto105;
+    }
+
+    public void setNeto105(double neto105) {
+        this.neto105 = neto105;
+    }
+
+    public double getPercepcionIVA() {
+        return PercepcionIVA;
+    }
+
+    public void setPercepcionIVA(double percepcionIVA) {
+        PercepcionIVA = percepcionIVA;
+    }
+
+    public double getPercepcionIB() {
+        return PercepcionIB;
+    }
+
+    public void setPercepcionIB(double percepcionIB) {
+        PercepcionIB = percepcionIB;
+    }
+
+    public double getOtrosImpuestos() {
+        return OtrosImpuestos;
+    }
+
+    public void setOtrosImpuestos(double otrosImpuestos) {
+        OtrosImpuestos = otrosImpuestos;
+    }
+
+    public double getIVA21() {
+        return IVA21;
+    }
+
+    public void setIVA21(double IVA21) {
+        this.IVA21 = IVA21;
+    }
+
+    public double getIVA105() {
+        return IVA105;
+    }
+
+    public void setIVA105(double IVA105) {
+        this.IVA105 = IVA105;
+    }
+
+    public double calculodeiva21(){
+        return getNeto21()*0.21 ;
+    }
+    public double calculoiva105(){
+        return getNeto105()*0.105;
+    }
+
+
 
     @Override
     public double calculototal() {
-        return getNogrado() + neto21 + neto105 + IVA21 + IVA105 + percepcionIVA + percepcionIB + otrosImpuestos;
+        double total = getNogrado() + getNeto21() + getNeto105()
+                + getPercepcionIVA() + getPercepcionIB() + getOtrosImpuestos() + getIVA21() + getIVA105();
+        return total;
     }
-
-    private double calcularIVA21() { return neto21 * 0.21; }
-    private double calcularIVA105() { return neto105 * 0.105; }
 
     @Override
     public void cargaDatos(Scanner scanner) {
-        try {
-            // System.out.print("Ingrese el tipo de operación (VENTA/COMPRA): "); esto quedo innecesario pero no lo borro por si acaso.
-            // setTipoOperacion(TipoOperacion.valueOf(scanner.next().toUpperCase()));
 
-            System.out.print("Ingrese el no gravado: ");
-            setNogrado(scanner.nextDouble());
+        System.out.print("Ingrese el no gravado: ");
+        setNogrado(scanner.nextDouble());
+        System.out.print("Ingrese el neto 21%: ");
+        neto21 = scanner.nextDouble();
+        System.out.print("Ingrese el neto 10.5%: ");
+        neto105 = scanner.nextDouble();
+        System.out.print("Ingrese la percepción de IVA: ");
+        PercepcionIVA = scanner.nextDouble();
+        System.out.print("Ingrese la percepción de IIBB: ");
+        PercepcionIB = scanner.nextDouble();
+        System.out.print("Ingrese otros impuestos: ");
+        OtrosImpuestos = scanner.nextDouble();
 
-            System.out.print("Ingrese el neto 21%: ");
-            neto21 = scanner.nextDouble();
+        //recalculo de impuestos
 
-            System.out.print("Ingrese el neto 10.5%: ");
-            neto105 = scanner.nextDouble();
+        IVA21 = calculodeiva21();
+        IVA105 = calculoiva105();
+        setTotal(calculototal());
 
-            System.out.print("Ingrese percepción de IVA: ");
-            percepcionIVA = scanner.nextDouble();
-
-            System.out.print("Ingrese percepción de IIBB: ");
-            percepcionIB = scanner.nextDouble();
-
-            System.out.print("Ingrese otros impuestos: ");
-            otrosImpuestos = scanner.nextDouble();
-
-            IVA21 = calcularIVA21();
-            IVA105 = calcularIVA105();
-
-            setTotal(calculototal());
-
-        } catch (Exception e) {
-            System.out.println("Error al cargar los datos: " + e.getMessage());
-            scanner.nextLine(); // limpiar buffer
-        }
     }
 
     @Override
     public String toString() {
-        return "\n---------- FACTURA A ----------" +
+        return"\n========= FACTURA A =========" +
                 "\nCUIT: " + getCuit() +
                 "\nTipo: " + getTipo() +
-                "\nOperación: " + getTipoOperacion() +
                 "\nSucursal: " + getSucursal() +
                 "\nN° Factura: " + getNumerodefactura() +
                 "\nFecha: " + getFecha() +
-                "\n------------------------------------" +
+                "\n-----------------------------" +
                 "\nNo Gravado: $" + String.format("%.2f", getNogrado()) +
                 "\nNeto 21%%: $" + String.format("%.2f", neto21) +
                 "\nIVA 21%%: $" + String.format("%.2f", IVA21) +
                 "\nNeto 10.5%%: $" + String.format("%.2f", neto105) +
                 "\nIVA 10.5%%: $" + String.format("%.2f", IVA105) +
-                "\nPercepción IVA: $" + String.format("%.2f", percepcionIVA) +
-                "\nPercepción IB: $" + String.format("%.2f", percepcionIB) +
-                "\nOtros impuestos: $" + String.format("%.2f", otrosImpuestos) +
-                "\n------------------------------------" +
+                "\nPercepción IVA: $" + String.format("%.2f", PercepcionIVA) +
+                "\nPercepción IB: $" + String.format("%.2f", PercepcionIB) +
+                "\nOtros Impuestos: $" + String.format("%.2f", OtrosImpuestos) +
+                "\n=============================" +
                 "\nTOTAL: $" + String.format("%.2f", getTotal()) +
-                "\n------------------------------------\n";
+                "\n=============================\n";
+    }
+    public JSONObject toJson() throws JSONException {
+        JSONObject obj = super.toJson();
+        obj.put("neto21" , neto21);
+        obj.put("neto105" , neto105);
+        obj.put("percepcionIVA", PercepcionIVA);
+        obj.put("percepcionIB", PercepcionIB);
+        obj.put("Otros Impuestos", OtrosImpuestos);
+        obj.put("Iva21", IVA21);
+        obj.put("Iva 105", IVA105);
+        return obj;
     }
 }

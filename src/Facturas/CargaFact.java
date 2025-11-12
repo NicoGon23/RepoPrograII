@@ -1,59 +1,36 @@
 package Facturas;
 
 import Facturas.Enums.Tipodecomprobante;
-import Facturas.Enums.TipoOperacion;
 
+import java.lang.reflect.Constructor;
 import java.time.LocalDate;
-import java.util.Scanner;
 
-public class CargaFact {
+public class CargaFact<T extends Factura>{
 
-    private Scanner scanner = new Scanner(System.in);
+    private Tipodecomprobante tipo; // en lugar de Class<T>
 
-    public Factura crearFactura() {
+    public CargaFact(Tipodecomprobante tipo) {
+        this.tipo = tipo;
+    }
+
+    public Factura crearFactura(double nogravado , String cuit , Tipodecomprobante tipo , int sucursal , int numerodefacutra ,LocalDate fecha , double neto21, double neto105, double percepcionIVA, double percepcionIB, double otrosImpuestos) {
         Factura factura = null;
 
-        try {
-            System.out.print("Ingrese el tipo de comprobante (A/B/C): ");
-            Tipodecomprobante tipo = Tipodecomprobante.valueOf(scanner.next().toUpperCase());
-
-            System.out.print("Ingrese CUIT: ");
-            String cuit = scanner.next();
-
-            System.out.print("Ingrese sucursal: ");
-            int sucursal = scanner.nextInt();
-
-            System.out.print("Ingrese número de factura: ");
-            int numero = scanner.nextInt();
-
-            System.out.print("Ingrese fecha (AAAA-MM-DD): ");
-            LocalDate fecha = LocalDate.parse(scanner.next());
-
-            System.out.print("Ingrese tipo de operación (COMPRA/VENTA): ");
-            TipoOperacion operacion = TipoOperacion.valueOf(scanner.next().toUpperCase());
-
-            // Instanciar la factura según el tipo
-            switch (tipo) {
-                case A:
-                    factura = new FacturaA(cuit, sucursal, numero, fecha, operacion);
-                    break;
-                case B:
-                    factura = new FacturaB(cuit, sucursal, numero, fecha, operacion);
-                    break;
-                case C:
-                    factura = new FacturaC(cuit, sucursal, numero, fecha, operacion);
-                    break;
-            }
-
-            if (factura != null) {
-                factura.cargaDatos(scanner); // Llamada unificada
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error al crear la factura: " + e.getMessage());
-            scanner.nextLine(); // limpiar buffer
+        switch (tipo) {
+            case A:
+                factura = new FacturaA( nogravado ,  cuit ,  tipo ,  sucursal ,  numerodefacutra , fecha ,  neto21, neto105,  percepcionIVA,  percepcionIB, otrosImpuestos);
+                break;
+            case B:
+                factura = new FacturaB(nogravado ,  cuit ,  tipo ,  sucursal ,  numerodefacutra , fecha ,  neto21, neto105,  percepcionIVA,  percepcionIB, otrosImpuestos);
+                break;
+            case C:
+                factura = new FacturaC(nogravado ,  cuit ,  tipo ,  sucursal ,  numerodefacutra , fecha );
+                break;
+            default:
+                System.out.println("⚠️ Tipo de factura no reconocido.");
         }
 
         return factura;
     }
+
 }
