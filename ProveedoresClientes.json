@@ -1,0 +1,32 @@
+[
+    {
+        "rubro": "a",
+        "tipo": "Proveedor",
+        "cuit": "1234",
+        "apellido": "a",
+        "direccion": "a",
+        "telefono": "a",
+        "nombre": "a",
+        "email": "a"
+    },
+    {
+        "tipoCliente": "a",
+        "tipo": "Cliente",
+        "cuit": "11",
+        "apellido": "a",
+        "direccion": "a",
+        "telefono": "a",
+        "nombre": "a",
+        "email": "a"
+    },
+    {
+        "tipoCliente": "a",
+        "tipo": "Cliente",
+        "cuit": "1234",
+        "apellido": "a",
+        "direccion": "a",
+        "telefono": "a",
+        "nombre": "a",
+        "email": "a"
+    }
+]
