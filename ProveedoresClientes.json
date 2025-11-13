@@ -28,5 +28,35 @@
         "telefono": "a",
         "nombre": "a",
         "email": "a"
+    },
+    {
+        "rubro": "",
+        "tipo": "Proveedor",
+        "cuit": "3065704648",
+        "apellido": "",
+        "direccion": "",
+        "telefono": "",
+        "nombre": "UU",
+        "email": ""
+    },
+    {
+        "rubro": "",
+        "tipo": "Proveedor",
+        "cuit": "nico",
+        "apellido": "",
+        "direccion": "",
+        "telefono": "",
+        "nombre": "nico",
+        "email": ""
+    },
+    {
+        "rubro": "nico",
+        "tipo": "Proveedor",
+        "cuit": "3030303030",
+        "apellido": "nico",
+        "direccion": "nico",
+        "telefono": "nico",
+        "nombre": "nico",
+        "email": "nico"
     }
 ]

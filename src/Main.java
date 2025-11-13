@@ -1,7 +1,7 @@
 import javafx.application.Application;
 
 import FX.MainFX;
-public class Main {
+public class Main{
     public static void main(String[] args) {
         Application.launch(MainFX.class, args);
     }

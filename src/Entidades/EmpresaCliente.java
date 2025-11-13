@@ -228,11 +228,11 @@ public class EmpresaCliente {
     }
     public TipoCondiciondeIva asignaciondeiva (int condiciondeiva ) {
         if (condiciondeiva == 1) {
-            return TipoCondiciondeIva.RESPONSABLE;
+            return TipoCondiciondeIva.INSCRIPTO;
         } else if (condiciondeiva == 2) {
             return TipoCondiciondeIva.MONOTRIBUTISTA;
         } else {
-            return TipoCondiciondeIva.EXCENTO;
+            return TipoCondiciondeIva.EXENTO;
         }
 
     }
